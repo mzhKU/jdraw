@@ -1,0 +1,7 @@
+.idea
+.gradle
+.settings
+build
+out
+gradle
+docs
