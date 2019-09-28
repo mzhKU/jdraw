@@ -28,6 +28,7 @@ public class StdDrawModel implements DrawModel {
 	public void addFigure(Figure f) {
 	    if(!figures.contains(f)) {
 	    	figures.add(f);
+	    	f.addFigureListener((e) -> new FigureEvent(f));
 			for (DrawModelListener l : listeners) {
 				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
 			}
