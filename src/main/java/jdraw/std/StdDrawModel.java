@@ -28,9 +28,9 @@ public class StdDrawModel implements DrawModel {
 	public void addFigure(Figure f) {
 	    if(!figures.contains(f)) {
 	    	figures.add(f);
-		}
-	    for (DrawModelListener l : listeners) {
-	    	l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
+			for (DrawModelListener l : listeners) {
+				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
+			}
 		}
 	}
 
@@ -76,8 +76,11 @@ public class StdDrawModel implements DrawModel {
 
 	@Override
 	public void removeAllFigures() {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeAllFigures has to be implemented");
+		for (Figure f : figures) {
+			figures.remove(f);
+			for (DrawModelListener l : listeners) {
+				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CLEARED));
+			}
+		}
 	}
-
 }

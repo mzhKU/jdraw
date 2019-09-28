@@ -13,6 +13,7 @@ import java.util.EventListener;
  * @author  Dominik Gruntz &amp; Christoph Denzler
  * @version 2.5
  */
+@FunctionalInterface
 public interface DrawModelListener extends EventListener {
 
 	/**

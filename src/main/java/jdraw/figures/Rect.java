@@ -9,12 +9,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 import java.util.List;
 
-import jdraw.framework.DrawModel;
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import jdraw.framework.*;
 import jdraw.std.StdDrawModel;
 
 /**
@@ -26,13 +24,14 @@ import jdraw.std.StdDrawModel;
 public class Rect implements Figure {
 	private static final long serialVersionUID = 9120181044386552132L;
 
+	private static final List<FigureListener> figureListeners = new LinkedList<>();
 	private static final DrawModel model = new StdDrawModel();
 
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
 	 */
 	private final Rectangle rectangle;
-	
+
 	/**
 	 * Create a new rectangle of the given dimension.
 	 * @param x the x-coordinate of the upper left corner of the rectangle
@@ -90,12 +89,15 @@ public class Rect implements Figure {
 
 	@Override
 	public void addFigureListener(FigureListener listener) {
-		// TODO
+		figureListeners.add(listener);
+		for (FigureListener fl : figureListeners) {
+			fl.figureChanged(new FigureEvent(this));
+		}
 	}
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+		figureListeners.remove(listener);
 	}
 
 	@Override
