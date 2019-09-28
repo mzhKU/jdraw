@@ -12,14 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+import jdraw.framework.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawModelEvent;
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
 import jdraw.std.StdDrawModel;
 
 @SuppressWarnings("serial")

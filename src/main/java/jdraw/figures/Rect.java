@@ -11,9 +11,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import jdraw.framework.DrawModel;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
+import jdraw.std.StdDrawModel;
 
 /**
  * Represents rectangles in JDraw.
@@ -23,6 +25,8 @@ import jdraw.framework.FigureListener;
  */
 public class Rect implements Figure {
 	private static final long serialVersionUID = 9120181044386552132L;
+
+	private static final DrawModel model = new StdDrawModel();
 
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
@@ -86,7 +90,7 @@ public class Rect implements Figure {
 
 	@Override
 	public void addFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+		// TODO
 	}
 
 	@Override
