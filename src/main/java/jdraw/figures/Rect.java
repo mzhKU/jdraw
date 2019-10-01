@@ -25,7 +25,6 @@ public class Rect implements Figure {
 	private static final long serialVersionUID = 9120181044386552132L;
 
 	private static final List<FigureListener> figureListeners = new LinkedList<>();
-	private static final DrawModel model = new StdDrawModel();
 
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
@@ -58,13 +57,17 @@ public class Rect implements Figure {
 	@Override
 	public void setBounds(Point origin, Point corner) {
 		rectangle.setFrameFromDiagonal(origin, corner);
-		// TODO notification of change
+        for (FigureListener fl : figureListeners) {
+        	fl.figureChanged(new FigureEvent(this));
+		}
 	}
 
 	@Override
 	public void move(int dx, int dy) {
 		rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-		// TODO notification of change
+		for( FigureListener fl : figureListeners) {
+			fl.figureChanged(new FigureEvent(this));
+		}
 	}
 
 	@Override
