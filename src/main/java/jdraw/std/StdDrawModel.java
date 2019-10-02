@@ -8,6 +8,7 @@ package jdraw.std;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import jdraw.framework.*;
@@ -21,7 +22,7 @@ import jdraw.framework.*;
  */
 public class StdDrawModel implements DrawModel {
 
-	private final List<DrawModelListener> listeners = new LinkedList<>();
+	private final List<DrawModelListener> listeners = new CopyOnWriteArrayList<>();
 	private final List<Figure>              figures = new LinkedList<>();
 
 	@Override
@@ -46,7 +47,14 @@ public class StdDrawModel implements DrawModel {
 
 	@Override
 	public void removeFigure(Figure f) {
-	    figures.remove(f);
+		if(figures.contains(f)) {
+			figures.remove(f);
+			f.removeFigureListener(e -> {
+				for (DrawModelListener l : listeners) {
+					l.modelChanged(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.FIGURE_REMOVED));
+				}
+			});
+		}
 	}
 
 	@Override
@@ -56,8 +64,7 @@ public class StdDrawModel implements DrawModel {
 
 	@Override
 	public void removeModelChangeListener(DrawModelListener listener) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeModelChangeListener has to be implemented");
+		listeners.remove(listener);
 	}
 
 	/** The draw command handler. Initialized here with a dummy implementation. */
@@ -75,14 +82,18 @@ public class StdDrawModel implements DrawModel {
 
 	@Override
 	public void setFigureIndex(Figure f, int index) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.setFigureIndex has to be implemented");
+ 		figures.set(index, f);
 	}
 
 	@Override
 	public void removeAllFigures() {
 		for (Figure f : figures) {
 			figures.remove(f);
+			f.removeFigureListener(e -> {
+				for (DrawModelListener l : listeners) {
+					l.modelChanged(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.DRAWING_CLEARED));
+				}
+			});
 			for (DrawModelListener l : listeners) {
 				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CLEARED));
 			}
