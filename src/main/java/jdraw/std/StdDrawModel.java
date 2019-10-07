@@ -23,7 +23,7 @@ import jdraw.framework.*;
 public class StdDrawModel implements DrawModel {
 
 	private final List<DrawModelListener> listeners = new CopyOnWriteArrayList<>();
-	private final List<Figure>              figures = new LinkedList<>();
+	private final List<Figure>              figures = new CopyOnWriteArrayList<>();
 
 	@Override
 	public void addFigure(Figure f) {
@@ -81,8 +81,26 @@ public class StdDrawModel implements DrawModel {
 	}
 
 	@Override
-	public void setFigureIndex(Figure f, int index) {
- 		figures.set(index, f);
+	public void setFigureIndex(Figure f, int index) throws IllegalArgumentException, IndexOutOfBoundsException {
+		System.out.println(figures);
+
+		List<Figure> tmp = figures;
+
+		tmp.set(index, f);
+		for(int i = index +1; i<figures.size(); i++) {
+			tmp.set(i, figures.get(i));
+		}
+
+		for(int i = 0; i<figures.size(); i++) {
+			figures.set(i, tmp.get(i));
+		}
+
+		// figures.set(index, f);
+
+		System.out.println(figures);
+ 		for (DrawModelListener l : listeners) {
+ 			l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CHANGED));
+		}
 	}
 
 	@Override

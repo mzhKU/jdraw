@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import jdraw.framework.*;
 import jdraw.std.StdDrawModel;
@@ -24,7 +25,7 @@ import jdraw.std.StdDrawModel;
 public class Rect implements Figure {
 	private static final long serialVersionUID = 9120181044386552132L;
 
-	private static final List<FigureListener> figureListeners = new LinkedList<>();
+	private static final List<FigureListener> figureListeners = new CopyOnWriteArrayList<>();
 
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
@@ -100,7 +101,12 @@ public class Rect implements Figure {
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-		figureListeners.remove(listener);
+	    if(figureListeners.contains(listener)) {
+			figureListeners.remove(listener);
+			for (FigureListener fl : figureListeners) {
+				fl.figureChanged(new FigureEvent(this));
+			}
+		}
 	}
 
 	@Override
