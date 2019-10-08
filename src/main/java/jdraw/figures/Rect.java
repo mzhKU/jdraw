@@ -103,9 +103,6 @@ public class Rect implements Figure {
 	public void removeFigureListener(FigureListener listener) {
 	    if(figureListeners.contains(listener)) {
 			figureListeners.remove(listener);
-			for (FigureListener fl : figureListeners) {
-				fl.figureChanged(new FigureEvent(this));
-			}
 		}
 	}
 
