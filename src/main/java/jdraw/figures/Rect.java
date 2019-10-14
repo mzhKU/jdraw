@@ -49,7 +49,7 @@ public class Rect implements Figure {
 	 */
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.WHITE);
+		g.setColor(Color.MAGENTA);
 		g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		g.setColor(Color.BLACK);
 		g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
@@ -88,7 +88,9 @@ public class Rect implements Figure {
 	 */	
 	@Override
 	public List<FigureHandle> getHandles() {
-		return null;
+	    List<FigureHandle> handles = new LinkedList<>();
+	    handles.add(new NorthWestHandle(this));
+		return handles;
 	}
 
 	@Override
