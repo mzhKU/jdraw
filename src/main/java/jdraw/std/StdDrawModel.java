@@ -23,29 +23,24 @@ public class StdDrawModel implements DrawModel {
 
 	private final List<DrawModelListener> listeners = new CopyOnWriteArrayList<>(); // fixes concurrent modifications
 	private final List<Figure>              figures = new CopyOnWriteArrayList<>();
-	private final Map<Figure, FigureListener> flMap = new HashMap<>();
 
-	// Version with figure listener pre-instantiated
-	/*
+	// private FigureListener fl = new FigureListener() {
+	// 	@Override
+	// 	public void figureChanged(FigureEvent e) {
+	// 		StdDrawModel.this.notifyListeners(e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED);
+	// 	}
+	// };
+
 	private FigureListener fl = e -> {
-		for (DrawModelListener l : listeners) {
-			l.modelChanged(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED));
-		}
+		this.notifyListeners(e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED);
 	};
-	 */
 
 	@Override
 	public void addFigure(Figure f) {
 	    if(!figures.contains(f)) {
 	    	figures.add(f);
-	    	flMap.put(f, (e) -> {
-	    	    notifyListeners(f, DrawModelEvent.Type.FIGURE_ADDED);
-			});
-			f.addFigureListener(flMap.get(f));
+	    	f.addFigureListener(this.fl);
 			notifyListeners(f, DrawModelEvent.Type.FIGURE_ADDED);
-
-			// Version with figure listener pre-instantiated
-			// f.addFigureListener(fl)
 		}
 	}
 
@@ -63,11 +58,7 @@ public class StdDrawModel implements DrawModel {
 		if(figures.contains(f)) {
 			figures.remove(f);
 			notifyListeners(f, DrawModelEvent.Type.FIGURE_REMOVED);
-			FigureListener flToRemove = flMap.get(f);
-			f.removeFigureListener(flToRemove);
-			// Version with pre-instantiated figure listener:
-			// f.removeFigureListener()
-			flMap.remove(f);
+			f.removeFigureListener(fl);
 		}
 	}
 

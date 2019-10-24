@@ -44,6 +44,14 @@ public class Rect implements Figure {
 		this.figureListeners = new CopyOnWriteArrayList<>();
 	}
 
+
+	/*
+	protected void propagateFigureEvent(FigureEvent evt) {
+		listeners.forEach(l -> l.figureChanged(evt));
+	}
+	*/
+
+
 	/**
 	 * Draw the rectangle to the given graphics context.
 	 * @param g the graphics context to use for drawing.
@@ -66,7 +74,7 @@ public class Rect implements Figure {
 
 	@Override
 	public void move(int dx, int dy) {
-		if (dx > 0 || dy > 0) {
+		if (dx != 0 || dy != 0) {
 			rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
             for (FigureListener fl : figureListeners) {
                 fl.figureChanged(new FigureEvent(this));
