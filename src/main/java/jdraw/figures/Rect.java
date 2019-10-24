@@ -65,9 +65,11 @@ public class Rect implements Figure {
 
 	@Override
 	public void move(int dx, int dy) {
-		rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-		for( FigureListener fl : figureListeners) {
-			fl.figureChanged(new FigureEvent(this));
+		if (dx > 0 || dy > 0) {
+			rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
+			for (FigureListener fl : figureListeners) {
+				fl.figureChanged(new FigureEvent(this));
+			}
 		}
 	}
 
@@ -96,9 +98,9 @@ public class Rect implements Figure {
 	@Override
 	public void addFigureListener(FigureListener listener) {
 		figureListeners.add(listener);
-		for (FigureListener fl : figureListeners) {
-			fl.figureChanged(new FigureEvent(this));
-		}
+		// for (FigureListener fl : figureListeners) {
+		// 	fl.figureChanged(new FigureEvent(this));
+		// }
 	}
 
 	@Override
