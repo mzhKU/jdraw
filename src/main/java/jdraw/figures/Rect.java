@@ -103,7 +103,7 @@ public class Rect implements Figure {
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-		figureListeners.clear();
+		figureListeners.remove(listener);
 	}
 
 	@Override
