@@ -25,7 +25,7 @@ import jdraw.std.StdDrawModel;
 public class Rect implements Figure {
 	private static final long serialVersionUID = 9120181044386552132L;
 
-	private static final List<FigureListener> figureListeners = new CopyOnWriteArrayList<>();
+	private List<FigureListener> figureListeners;
 
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
@@ -41,6 +41,7 @@ public class Rect implements Figure {
 	 */
 	public Rect(int x, int y, int w, int h) {
 		rectangle = new Rectangle(x, y, w, h);
+		this.figureListeners = new CopyOnWriteArrayList<>();
 	}
 
 	/**
@@ -58,8 +59,8 @@ public class Rect implements Figure {
 	@Override
 	public void setBounds(Point origin, Point corner) {
 		rectangle.setFrameFromDiagonal(origin, corner);
-        for (FigureListener fl : figureListeners) {
-        	fl.figureChanged(new FigureEvent(this));
+		for (FigureListener fl : figureListeners) {
+			fl.figureChanged(new FigureEvent(this));
 		}
 	}
 
@@ -67,9 +68,9 @@ public class Rect implements Figure {
 	public void move(int dx, int dy) {
 		if (dx > 0 || dy > 0) {
 			rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-			for (FigureListener fl : figureListeners) {
-				fl.figureChanged(new FigureEvent(this));
-			}
+            for (FigureListener fl : figureListeners) {
+                fl.figureChanged(new FigureEvent(this));
+            }
 		}
 	}
 
@@ -97,22 +98,16 @@ public class Rect implements Figure {
 
 	@Override
 	public void addFigureListener(FigureListener listener) {
-		figureListeners.add(listener);
-		// for (FigureListener fl : figureListeners) {
-		// 	fl.figureChanged(new FigureEvent(this));
-		// }
+        this.figureListeners.add(listener);
 	}
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-	    if(figureListeners.contains(listener)) {
-			figureListeners.remove(listener);
-		}
+		figureListeners.clear();
 	}
 
 	@Override
 	public Figure clone() {
 		return null;
 	}
-
 }

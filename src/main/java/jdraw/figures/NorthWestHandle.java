@@ -12,6 +12,10 @@ public class NorthWestHandle implements FigureHandle {
     private Figure figure;
     private Point corner;
 
+    private final int HANDLE_SIZE = 6;
+    private final int HANDLE_x    = 3;
+    private final int HANDLE_y    = 3;
+
     public NorthWestHandle(Figure owner) {
         this.figure = owner;
     }
@@ -29,9 +33,8 @@ public class NorthWestHandle implements FigureHandle {
     @Override
     public void draw(Graphics g) {
         Point loc = getLocation();
-        // TODO: Constants for the size of then handle
-        g.setColor(Color.GREEN); g.fillRect(loc.x-3, loc.y-3, 6, 6);
-        g.setColor(Color.BLUE);  g.drawRect(loc.x-3, loc.y-3, 6, 6);
+        g.setColor(Color.GREEN); g.fillRect(loc.x-HANDLE_x, loc.y-HANDLE_y, HANDLE_SIZE, HANDLE_SIZE);
+        g.setColor(Color.BLUE);  g.drawRect(loc.x-HANDLE_x, loc.y-HANDLE_y, HANDLE_SIZE, HANDLE_SIZE);
     }
 
     @Override
@@ -41,9 +44,8 @@ public class NorthWestHandle implements FigureHandle {
 
     @Override
     public boolean contains(int x, int y) {
-        // TODO: Constants for the size of then handle
-        boolean withinX = getLocation().x-3<x && getLocation().x+3>x;
-        boolean withinY = getLocation().y-3<y && getLocation().y+3>y;
+        boolean withinX = getLocation().x-HANDLE_x<x && getLocation().x+HANDLE_x>x;
+        boolean withinY = getLocation().y-HANDLE_y<y && getLocation().y+HANDLE_y>y;
         return withinX && withinY;
     }
 

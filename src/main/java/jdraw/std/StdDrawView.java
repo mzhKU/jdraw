@@ -70,8 +70,10 @@ public final class StdDrawView extends JComponent implements DrawView {
 	public StdDrawView(DrawModel aModel) {
 
 		this.model = aModel;
+		System.out.println("Draw Model: " + this.model);
 
 		ml = e -> {
+				System.out.println("Event model: " + e.getModel());
 				Dimension size = getPreferredSize();
 				setPreferredSize(size);
 				revalidate();

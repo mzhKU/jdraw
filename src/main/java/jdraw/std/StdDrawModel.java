@@ -38,17 +38,14 @@ public class StdDrawModel implements DrawModel {
 	public void addFigure(Figure f) {
 	    if(!figures.contains(f)) {
 	    	figures.add(f);
-			// Version with figure listener pre-instantiated
-			// f.addFigureListener(fl)
-	    	flMap.put(f, e -> {
-				for (DrawModelListener l : listeners) {
-					l.modelChanged(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED));
-				}
+	    	flMap.put(f, (e) -> {
+	    	    notifyListeners(f, DrawModelEvent.Type.FIGURE_ADDED);
 			});
 			f.addFigureListener(flMap.get(f));
-			for (DrawModelListener l : listeners) {
-				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
-			}
+			notifyListeners(f, DrawModelEvent.Type.FIGURE_ADDED);
+
+			// Version with figure listener pre-instantiated
+			// f.addFigureListener(fl)
 		}
 	}
 
@@ -65,9 +62,7 @@ public class StdDrawModel implements DrawModel {
 		// This will search the list twice
 		if(figures.contains(f)) {
 			figures.remove(f);
-			for(DrawModelListener l : listeners) {
-				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_REMOVED));
-			}
+			notifyListeners(f, DrawModelEvent.Type.FIGURE_REMOVED);
 			FigureListener flToRemove = flMap.get(f);
 			f.removeFigureListener(flToRemove);
 			// Version with pre-instantiated figure listener:
@@ -112,16 +107,11 @@ public class StdDrawModel implements DrawModel {
 			throw new IllegalArgumentException("Figure f not contained in model.");
 		}
 
-		System.out.println(figures);
 		if(pos != index) {
 			figures.remove(f);
 			figures.add(index, f);
 		}
-		System.out.println(figures);
-
- 		for (DrawModelListener l : listeners) {
- 			l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CHANGED));
-		}
+		notifyListeners(f, DrawModelEvent.Type.DRAWING_CHANGED);
 	}
 
 	@Override
@@ -129,13 +119,16 @@ public class StdDrawModel implements DrawModel {
 		for (Figure f : figures) {
 			figures.remove(f);
 			f.removeFigureListener(e -> {
-				for (DrawModelListener l : listeners) {
-					l.modelChanged(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.DRAWING_CLEARED));
-				}
+			    notifyListeners(f, DrawModelEvent.Type.DRAWING_CLEARED);
 			});
-			for (DrawModelListener l : listeners) {
-				l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CLEARED));
-			}
+			notifyListeners(f, DrawModelEvent.Type.DRAWING_CLEARED);
+		}
+	}
+
+	protected void notifyListeners(Figure f, DrawModelEvent.Type type) {
+		DrawModelEvent dme = new DrawModelEvent(this, f, type);
+		for (DrawModelListener l : listeners) {
+			l.modelChanged(dme);
 		}
 	}
 }

@@ -26,6 +26,13 @@ public class RectangleTest {
 
 	@Test
 	public void testNotification1() {
+		// class TestListener implements FigureListener {
+		// 	@Override
+		// 	public void figureChanged(FigureEvent e) {
+		// 		assertTrue(e.getSource() == f);
+		// 		cnt++;
+		// 	}
+		// }
 		FigureListener l = new TestListener();
 		f.addFigureListener(l);
 		f.move(1, 1);
@@ -44,9 +51,25 @@ public class RectangleTest {
 
 	@Test
 	final public void testMultiListeners() {
+		// @BeforeEach
+		// public void setUp() {
+		// 	f = new Rect(1, 1, 20, 10);
+		// 	cnt = 0;
+		// }
+
+		// class TestListener implements FigureListener {
+		// 	@Override
+		// 	public void figureChanged(FigureEvent e) {
+		// 		assertTrue(e.getSource() == f);
+		// 		cnt++;
+		// 	}
+		// }
+
 		f.addFigureListener(new TestListener());
 		f.addFigureListener(new TestListener());
+		System.out.println("cnt: " + cnt);
 		int c = cnt;
+		System.out.println("c: " + c);
 		f.move(3, 3);
 		assertTrue(cnt == c + 2, "multiple listeners are not supported");
 	}
@@ -81,8 +104,10 @@ public class RectangleTest {
 	class TestListener implements FigureListener {
 		@Override
 		public void figureChanged(FigureEvent e) {
+			System.out.println("Test listener e: " + e.getSource());
 			assertTrue(e.getSource() == f);
 			cnt++;
+			System.out.println("Test listener cnt: " + cnt);
 		}
 	}
 
