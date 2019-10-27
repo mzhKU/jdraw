@@ -5,10 +5,7 @@
 
 package jdraw.figures;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,6 +56,7 @@ public class Rect implements Figure {
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.MAGENTA);
+		((Graphics2D) g).setStroke(new BasicStroke(1));
 		g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		g.setColor(Color.BLACK);
 		g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);

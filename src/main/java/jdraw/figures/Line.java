@@ -54,7 +54,8 @@ public class Line implements Figure {
 	 */
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.CYAN);
+		g.setColor(Color.BLUE);
+		((Graphics2D) g).setStroke(new BasicStroke(5));
 		g.drawLine((int)line.x1, (int)line.y1, (int)line.x2, (int)line.y2);
 	}
 
