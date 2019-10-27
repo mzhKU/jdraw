@@ -16,6 +16,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import jdraw.figures.Group;
 import jdraw.figures.LineTool;
 import jdraw.figures.RectTool;
 import jdraw.framework.DrawCommandHandler;
@@ -107,11 +108,28 @@ public class StdContext extends AbstractContext {
 		
 		editMenu.addSeparator();
 		JMenuItem group = new JMenuItem("Group");
-		group.setEnabled(false);
+		group.addActionListener(e -> {
+			getModel().addFigure(new Group(getView().getSelection()));
+
+			// When moving a group, not only the group is moved, but also
+			// the figures within the group because the figures are still
+			// stored in the model --> Both the group and the figures
+			// will be moved --> The group moves twice as fast as the
+			// mouse.
+			for (Figure f : getView().getSelection()) {
+				getModel().removeFigure(f);
+			}
+		});
+		group.setEnabled(true);
 		editMenu.add(group);
 
 		JMenuItem ungroup = new JMenuItem("Ungroup");
-		ungroup.setEnabled(false);
+		ungroup.addActionListener(e -> {
+			for (Figure f : getView().getSelection()) {
+				getModel().addFigure(f);
+			}
+		});
+		ungroup.setEnabled(true);
 		editMenu.add(ungroup);
 
 		editMenu.addSeparator();
