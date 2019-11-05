@@ -19,12 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import jdraw.figures.Group;
 import jdraw.figures.LineTool;
 import jdraw.figures.RectTool;
-import jdraw.framework.DrawCommandHandler;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawTool;
-import jdraw.framework.DrawToolFactory;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
+import jdraw.framework.*;
 import jdraw.grids.StdGrid;
 
 /**
@@ -151,7 +146,9 @@ public class StdContext extends AbstractContext {
 		JMenu grid = new JMenu("Grid...");
 		JMenuItem gridOne = new JMenuItem("50x50Grid");
 		gridOne.addActionListener(e -> {
-			getView().setGrid(new StdGrid());
+			DrawGrid stdGrid = new StdGrid();
+			stdGrid.activate();
+			getView().setGrid(stdGrid);
 		});
 		grid.add(gridOne);
 		grid.add("Grid 2");
