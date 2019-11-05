@@ -72,17 +72,19 @@ public final class StdDrawView extends JComponent implements DrawView {
 		this.model = aModel;
 		// System.out.println("Draw Model: " + this.model);
 
-		ml = e -> {
+		ml = new DrawModelListener() {
+			@Override
+			public void modelChanged(DrawModelEvent e) {
 				// System.out.println("Event model: " + e.getModel());
-				Dimension size = getPreferredSize();
-				setPreferredSize(size);
-				revalidate();
+				Dimension size = StdDrawView.this.getPreferredSize();
+				StdDrawView.this.setPreferredSize(size);
+				StdDrawView.this.revalidate();
 
 				if (e.getType() == DrawModelEvent.Type.FIGURE_REMOVED) {
-					removeFromSelection(e.getFigure());
+					StdDrawView.this.removeFromSelection(e.getFigure());
 				}
 				if (e.getType() == DrawModelEvent.Type.DRAWING_CLEARED) {
-					clearSelection();
+					StdDrawView.this.clearSelection();
 				}
 
 //				if(e.getType() == DrawModelEvent.Type.FIGURE_ADDED
@@ -94,7 +96,8 @@ public final class StdDrawView extends JComponent implements DrawView {
 //				} else {
 //					repaint();
 //				}
-				repaint();
+				StdDrawView.this.repaint();
+			}
 		};
 
 		this.model.addModelChangeListener(ml);
