@@ -31,8 +31,11 @@ public class StdDrawModel implements DrawModel {
 	// 	}
 	// };
 
-	private FigureListener fl = e -> {
-		this.notifyListeners(e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED);
+	private FigureListener fl = new FigureListener() {
+		@Override
+		public void figureChanged(FigureEvent e) {
+			StdDrawModel.this.notifyListeners(e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED);
+		}
 	};
 
 	@Override

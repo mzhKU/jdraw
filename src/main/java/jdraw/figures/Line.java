@@ -70,7 +70,7 @@ public class Line implements Figure {
 	@Override
 	public void move(int dx, int dy) {
 		if (dx != 0 || dy != 0) {
-			line.setLine((double)dx + line.x1, (double)dy + line.y1, line.x2, line.y2);
+			line.setLine(dx + line.x1, dy + line.y1, dx + line.x2, dy + line.y2);
             for (FigureListener fl : figureListeners) {
                 fl.figureChanged(new FigureEvent(this));
             }
@@ -81,6 +81,7 @@ public class Line implements Figure {
 	public boolean contains(int x, int y) {
 		return line.contains(new Point(x, y));
 	}
+	// am I close to x/y? because 'line.contains' always returns false
 
 	@Override
 	public Rectangle getBounds() {
