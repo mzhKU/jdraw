@@ -1,16 +1,16 @@
 package jdraw.figures;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureGroup;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import jdraw.framework.*;
 
 import java.awt.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Group implements Figure, FigureGroup {
+
+    private List<FigureListener> figureListeners;
 
     private List<Figure> parts;
 
@@ -19,6 +19,7 @@ public class Group implements Figure, FigureGroup {
         for (Figure f : selectedFigures) {
             this.parts.add(f);
         }
+        this.figureListeners = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -32,6 +33,9 @@ public class Group implements Figure, FigureGroup {
     public void move(int dx, int dy) {
         for (Figure p : parts) {
             p.move(dx, dy);
+        }
+        for (FigureListener fl : figureListeners) {
+            fl.figureChanged(new FigureEvent(this));
         }
     }
 
@@ -71,12 +75,12 @@ public class Group implements Figure, FigureGroup {
 
     @Override
     public void addFigureListener(FigureListener listener) {
-
+        this.figureListeners.add(listener);
     }
 
     @Override
     public void removeFigureListener(FigureListener listener) {
-
+        this.figureListeners.remove(listener);
     }
 
     @Override
